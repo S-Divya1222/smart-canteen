@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Order Successful | Smart Canteen</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff8f2, #fff0e5);
+            display: flex;
+            flex-direction: column;
+            color: #292929;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        .navbar {
+            min-height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-family: 'Baloo 2', cursive;
+            font-size: 28px;
+            font-weight: 800;
+            color: #e65100;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #e65100;
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            width: 92%;
+            max-width: 760px;
+            margin: 50px auto;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 25px;
+            padding: 45px 40px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.10);
+            text-align: center;
+        }
+
+        /* ================= SUCCESS ICON ================= */
+
+        .success-icon {
+            width: 95px;
+            height: 95px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            font-weight: 700;
+            border: 5px solid #c8e6c9;
+        }
+
+        h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 42px;
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+
+        .message {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* ================= ORDER ID ================= */
+
+        .order-id-box {
+            background: #fff3e8;
+            border: 2px dashed #ffab91;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .order-id-box small {
+            display: block;
+            color: #777;
+            margin-bottom: 4px;
+        }
+
+        .order-id {
+            font-size: 27px;
+            font-weight: 800;
+            color: #e65100;
+        }
+
+        /* ================= ORDER DETAILS ================= */
+
+        .order-box {
+            background: #fffaf5;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: left;
+            margin-top: 25px;
+            border: 1px solid #ffe0cc;
+        }
+
+        .order-box h2 {
+            font-family: 'Baloo 2', cursive;
+            color: #d84315;
+            font-size: 27px;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            color: #777;
+            font-weight: 500;
+        }
+
+        .value {
+            font-weight: 700;
+            color: #333;
+            text-align: right;
+        }
+
+        .amount {
+            color: #e65100;
+            font-size: 20px;
+        }
+
+        .status {
+            color: #ef6c00;
+            background: #fff3e0;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        /* ================= STATUS SECTION ================= */
+
+        .status-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f9fff9;
+            border: 1px solid #d7efd9;
+            border-radius: 18px;
+        }
+
+        .status-section h3 {
+            font-family: 'Baloo 2', cursive;
+            color: #2e7d32;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .status-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+            gap: 5px;
+        }
+
+        .status-step {
+            width: 25%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .status-circle {
+            width: 38px;
+            height: 38px;
+            margin: auto;
+            border-radius: 50%;
+            background: #eeeeee;
+            color: #888;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .status-step.active .status-circle {
+            background: #43a047;
+            color: white;
+        }
+
+        .status-step p {
+            font-size: 11px;
+            margin-top: 8px;
+            color: #777;
+            font-weight: 600;
+        }
+
+        .status-step.active p {
+            color: #2e7d32;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 13px 22px;
+            border-radius: 11px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .primary {
+            background: #ff5722;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #e64a19;
+            transform: translateY(-2px);
+        }
+
+        .secondary {
+            background: #fff0e5;
+            color: #e65100;
+        }
+
+        .secondary:hover {
+            background: #ffe0cc;
+            transform: translateY(-2px);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: auto;
+            background: #292929;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        footer h2 {
+            font-family: 'Baloo 2', cursive;
+            color: #ffb74d;
+        }
+
+        footer p {
+            color: #ddd;
+            margin-top: 5px;
+            font-size: 13px;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .container {
+                margin: 30px auto;
+            }
+
+            .success-card {
+                padding: 35px 18px;
+            }
+
+            h1 {
+                font-size: 34px;
+            }
+
+            .order-id {
+                font-size: 23px;
+            }
+
+            .detail {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .value {
+                text-align: left;
+            }
+
+            .status-steps {
+                gap: 0;
+            }
+
+            .status-step p {
+                font-size: 9px;
+            }
+
+            .status-circle {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        🍴 Smart Canteen
+    </div>
+
+    <div class="nav-links">
+
+        <a href="{% url 'home' %}">
+            🏠 Home
+        </a>
+
+        <a href="{% url 'menu' %}">
+            🍴 Menu
+        </a>
+
+        <a href="{% url 'cart' %}">
+            🛒 Cart
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= MAIN ================= -->
+
+<main class="container">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>
+            Order Placed Successfully!
+        </h1>
+
+        <p class="message">
+            Thank you for ordering from Smart Canteen.
+            Your order has been received successfully.
+        </p>
+
+
+        {% if order %}
+
+        <!-- ORDER ID -->
+
+        <div class="order-id-box">
+
+            <small>
+                YOUR ORDER ID
+            </small>
+
+            <div class="order-id">
+                #{{ order.id }}
+            </div>
+
+        </div>
+
+
+        <!-- ORDER DETAILS -->
+
+        <div class="order-box">
+
+            <h2>
+                📦 Order Details
+            </h2>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Student Name
+                </span>
+
+                <span class="value">
+                    {{ order.student_name }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Register Number
+                </span>
+
+                <span class="value">
+                    {{ order.register_number }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Phone Number
+                </span>
+
+                <span class="value">
+                    {{ order.phone_number }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Total Amount
+                </span>
+
+                <span class="value amount">
+                    ₹{{ order.total_price }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Order Date
+                </span>
+
+                <span class="value">
+                    {{ order.order_date|date:"d M Y, h:i A" }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <span class="label">
+                    Current Status
+                </span>
+
+                <span class="value status">
+                    {{ order.status }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER STATUS -->
+
+        <div class="status-section">
+
+            <h3>
+                📋 Order Progress
+            </h3>
+
+            <div class="status-steps">
+
+                <div class="status-step active">
+
+                    <div class="status-circle">
+                        ✓
+                    </div>
+
+                    <p>
+                        Pending
+                    </p>
+
+                </div>
+
+
+                <div class="status-step">
+
+                    <div class="status-circle">
+                        2
+                    </div>
+
+                    <p>
+                        Preparing
+                    </p>
+
+                </div>
+
+
+                <div class="status-step">
+
+                    <div class="status-circle">
+                        3
+                    </div>
+
+                    <p>
+                        Ready
+                    </p>
+
+                </div>
+
+
+                <div class="status-step">
+
+                    <div class="status-circle">
+                        4
+                    </div>
+
+                    <p>
+                        Completed
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <a href="{% url 'my_orders' %}"
+               class="btn primary">
+
+                🔍 Track My Order
+
+            </a>
+
+
+            <a href="{% url 'menu' %}"
+               class="btn secondary">
+
+                🍴 Order More Food
+
+            </a>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <h2>
+        🍴 Smart Canteen
+    </h2>
+
+    <p>
+        Pre-order your food • Skip the queue • Enjoy your meal
+    </p>
+
+    <p>
+        © 2026 Smart Canteen. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+</body>
+
+</html>

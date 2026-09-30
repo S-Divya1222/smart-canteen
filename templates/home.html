@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Canteen - Pre-Order Food Online</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fffaf5;
+            color: #292929;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ================= NAVBAR ================= */
+        .navbar {
+            min-height: 70px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 6%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-family: 'Baloo 2', cursive;
+            font-size: 28px;
+            font-weight: 800;
+            color: #e65100;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 9px 13px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: #fff0e6;
+            color: #e65100;
+        }
+
+        .nav-links a.active {
+            background: #e65100;
+            color: white;
+        }
+
+        /* ================= HERO HEADER ================= */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.60), rgba(0,0,0,0.60)),
+                        url("https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1600&q=80");
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px 70px;
+        }
+
+        .hero span.badge {
+            display: inline-block;
+            background: #ff6b35;
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 48px;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #f1f1f1;
+            max-width: 650px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: #ff5722;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .hero-btn:hover {
+            background: #e64a19;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 87, 34, 0.5);
+        }
+
+        /* ================= CONTAINER ================= */
+        .container {
+            max-width: 1100px;
+            width: 90%;
+            margin: 50px auto 60px;
+            flex: 1;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 36px;
+            color: #d84315;
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: #666;
+            font-size: 15px;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 40px 25px;
+            text-align: center;
+            border-radius: 20px;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.08);
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 14px 32px rgba(230, 81, 0, 0.18);
+            border-color: #ffcc80;
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #fff3e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            transform: scale(1.1);
+            background: #ffe0b2;
+        }
+
+        .card h3 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 24px;
+            color: #e65100;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #777;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .card-link {
+            font-weight: 700;
+            font-size: 14px;
+            color: #e65100;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ================= HOW IT WORKS ================= */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 50px;
+            background: white;
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .feature-item .num {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+            background: #ff5722;
+            color: white;
+            font-weight: 800;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .feature-item h4 {
+            font-size: 16px;
+            color: #292929;
+            margin-bottom: 6px;
+        }
+
+        .feature-item p {
+            font-size: 13px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        /* ================= FOOTER ================= */
+        footer {
+            margin-top: auto;
+            background: #292929;
+            color: white;
+            text-align: center;
+            padding: 40px 20px 30px;
+        }
+
+        footer h3 {
+            font-family: 'Baloo 2', cursive;
+            color: #ffb74d;
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        footer p {
+            color: #ddd;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #f5f5f5;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffb74d;
+        }
+
+        .copyright {
+            color: #888;
+            font-size: 12px;
+            border-top: 1px solid #444;
+            padding-top: 18px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ================= RESPONSIVENESS ================= */
+        @media (max-width: 900px) {
+            .options {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 10px;
+                padding: 15px;
+            }
+            .nav-links {
+                justify-content: center;
+                gap: 8px;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                font-size: 15px;
+            }
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .hero {
+                padding: 50px 15px 40px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+            .nav-links a {
+                font-size: 12px;
+                padding: 7px 10px;
+            }
+            .card {
+                padding: 30px 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav class="navbar">
+        <a href="{% url 'home' %}" class="logo">🍴 Smart Canteen</a>
+        <div class="nav-links">
+            <a href="{% url 'home' %}" class="active">🏠 Home</a>
+            <a href="{% url 'menu' %}">🍴 Menu</a>
+            <a href="{% url 'cart' %}">🛒 Cart</a>
+            <a href="{% url 'checkout' %}">📝 Checkout</a>
+            <a href="{% url 'my_orders' %}">🔍 Track Order</a>
+            <a href="{% url 'admin_orders' %}">📦 Admin</a>
+        </div>
+    </nav>
+
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+        <span class="badge">College Canteen Pre-Order System</span>
+        <h1>Fresh Food, Fast Service</h1>
+        <p>Order your favorite breakfast, lunch, snacks, and drinks in advance. Skip long queues and collect your food on time!</p>
+        <a href="{% url 'menu' %}" class="hero-btn">🍴 Explore Menu & Order Now</a>
+    </header>
+
+    <!-- ================= MAIN CONTAINER ================= -->
+    <main class="container">
+
+        <div class="section-heading">
+            <h2>Quick Actions</h2>
+            <p>Everything you need in just a few clicks</p>
+        </div>
+
+        <div class="options">
+            <a href="{% url 'menu' %}" class="card">
+                <div class="icon-box">🍴</div>
+                <h3>Explore Menu</h3>
+                <p>Browse our wide range of freshly prepared South Indian & Chinese dishes, combos, and beverages.</p>
+                <span class="card-link">Browse Menu →</span>
+            </a>
+
+            <a href="{% url 'cart' %}" class="card">
+                <div class="icon-box">🛒</div>
+                <h3>View Cart</h3>
+                <p>Check selected items, modify quantities, and proceed directly to student checkout.</p>
+                <span class="card-link">Go to Cart →</span>
+            </a>
+
+            <a href="{% url 'my_orders' %}" class="card">
+                <div class="icon-box">📦</div>
+                <h3>Track My Order</h3>
+                <p>Check real-time live status of your order using your Register Number or Phone Number.</p>
+                <span class="card-link">Track Now →</span>
+            </a>
+        </div>
+
+        <!-- ================= HOW IT WORKS ================= -->
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="num">1</span>
+                <h4>Pick Your Meals</h4>
+                <p>Select delicious dishes from our categories and add them to your cart.</p>
+            </div>
+            <div class="feature-item">
+                <span class="num">2</span>
+                <h4>Easy Checkout</h4>
+                <p>Enter your student name, register number, and phone number to place the order.</p>
+            </div>
+            <div class="feature-item">
+                <span class="num">3</span>
+                <h4>Pick Up & Enjoy</h4>
+                <p>Track your status until Ready, then pick up hot food at the counter without waiting.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <h3>🍴 Smart Canteen</h3>
+        <p>Pre-order your food • Skip the queue • Enjoy your meal</p>
+        <div class="footer-links">
+            <a href="{% url 'home' %}">🏠 Home</a>
+            <a href="{% url 'menu' %}">🍴 Menu</a>
+            <a href="{% url 'cart' %}">🛒 Cart</a>
+            <a href="{% url 'checkout' %}">📝 Checkout</a>
+            <a href="{% url 'my_orders' %}">🔍 Track Order</a>
+            <a href="{% url 'admin_orders' %}">📦 Admin Orders</a>
+        </div>
+        <div class="copyright">
+            © 2026 Smart Canteen Pre Order Management System. All Rights Reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | Smart Canteen</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fff8f3;
+            color: #333;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: 800;
+            color: #ff5722;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #ff5722;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+        }
+
+        .box h2 {
+            margin-bottom: 20px;
+            color: #e65100;
+        }
+
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .food-item:last-child {
+            border-bottom: none;
+        }
+
+        .food-name {
+            font-weight: 600;
+        }
+
+        .quantity {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .food-price {
+            font-weight: 700;
+            color: #e65100;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 23px;
+            font-weight: 800;
+            color: #e65100;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ff5722;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .place-order {
+            width: 100%;
+            border: none;
+            background: #ff5722;
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .place-order:hover {
+            background: #e64a19;
+            transform: translateY(-2px);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .browse {
+            display: inline-block;
+            margin-top: 20px;
+            background: #ff5722;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+
+            .header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .food-item {
+                gap: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="header">
+
+    <div class="logo">
+        🍴 Smart Canteen
+    </div>
+
+    <a href="{% url 'cart' %}" class="back">
+        ← Back to Cart
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <h1>📝 Checkout</h1>
+
+
+    {% if error %}
+
+        <div class="error">
+            {{ error }}
+        </div>
+
+    {% endif %}
+
+
+    {% if cart_items %}
+
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="box">
+
+            <h2>
+                🍴 Your Order
+            </h2>
+
+
+            {% for item in cart_items %}
+
+                <div class="food-item">
+
+                    <div>
+
+                        <div class="food-name">
+                            {{ item.name }}
+                        </div>
+
+                        <div class="quantity">
+                            ₹{{ item.price }} × {{ item.quantity }}
+                        </div>
+
+                    </div>
+
+                    <div class="food-price">
+                        ₹{{ item.item_total }}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+
+            <div class="total">
+
+                <span>
+                    Total
+                </span>
+
+                <span>
+                    ₹{{ total_price }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENT DETAILS -->
+
+        <div class="box">
+
+            <h2>
+                🎓 Student Details
+            </h2>
+
+
+            <form method="POST"
+                  action="{% url 'place_order' %}">
+
+                {% csrf_token %}
+
+
+                <label>
+                    Student Name
+                </label>
+
+                <input
+                    type="text"
+                    name="student_name"
+                    placeholder="Enter your name"
+                    required
+                >
+
+
+                <label>
+                    Register Number
+                </label>
+
+                <input
+                    type="text"
+                    name="register_number"
+                    placeholder="Enter register number"
+                    required
+                >
+
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    name="phone_number"
+                    placeholder="Enter phone number"
+                    required
+                >
+
+
+                <button
+                    type="submit"
+                    class="place-order">
+
+                    ✅ Place Order
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+    {% else %}
+
+
+        <div class="box empty">
+
+            <h2>
+                🛒 Your cart is empty
+            </h2>
+
+            <p>
+                Please add food items before checkout.
+            </p>
+
+            <a href="{% url 'menu' %}"
+               class="browse">
+
+                Browse Menu
+
+            </a>
+
+        </div>
+
+
+    {% endif %}
+
+
+</div>
+
+
+</body>
+
+</html>

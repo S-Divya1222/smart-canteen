@@ -1,0 +1,624 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track My Order | Smart Canteen</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #333;
+        }
+
+        .header {
+            background: #ff6b35;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .search-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+        }
+
+        .search-box h2 {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #ff6b35;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e85a28;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px;
+            border-radius: 7px;
+            margin-top: 15px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .order-number {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .order-date {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .status {
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.preparing {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .status.ready {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status.completed {
+            background: #e0f2f1;
+            color: #00695c;
+        }
+
+        .status.cancelled {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .progress::before {
+            content: "";
+            position: absolute;
+            top: 18px;
+            left: 8%;
+            right: 8%;
+            height: 4px;
+            background: #ddd;
+            z-index: 0;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            width: 25%;
+        }
+
+        .circle {
+            width: 38px;
+            height: 38px;
+            margin: auto;
+            border-radius: 50%;
+            background: #ddd;
+            color: #777;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .step.active .circle {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .step span {
+            display: block;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .student-info {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .student-info p {
+            margin: 8px 0;
+        }
+
+        .items-title {
+            margin-top: 20px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            gap: 15px;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .item-details {
+            color: #777;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .item-total {
+            font-weight: bold;
+            white-space: nowrap;
+            font-size: 16px;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+
+        .cancelled-box {
+            background: #ffebee;
+            color: #c62828;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .no-orders {
+            background: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            color: #777;
+        }
+
+        .food-found {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+
+            .progress::before {
+                display: none;
+            }
+
+            .progress {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .step {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                text-align: left;
+            }
+
+            .circle {
+                margin: 0;
+            }
+
+            .item {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+
+    <h1>🍴 Smart Canteen</h1>
+
+    <a href="{% url 'menu' %}" class="back">
+        ← Back to Menu
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <div class="search-box">
+
+        <h2>📦 Track My Order</h2>
+
+        <p>
+            Enter your Register Number or Phone Number
+            to view your orders.
+        </p>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label>
+                    Register Number
+                </label>
+
+                <input
+                    type="text"
+                    name="register_number"
+                    value="{{ register_number|default:'' }}"
+                    placeholder="Enter Register Number"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Phone Number
+                </label>
+
+                <input
+                    type="text"
+                    name="phone_number"
+                    value="{{ phone_number|default:'' }}"
+                    placeholder="Enter Phone Number"
+                >
+
+            </div>
+
+
+            <button type="submit">
+                🔎 Search
+            </button>
+
+        </form>
+
+
+        {% if error %}
+
+            <div class="error">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if orders %}
+
+        {% for order in orders %}
+
+            <div class="order-card">
+
+                <div class="order-header">
+
+                    <div>
+
+                        <div class="order-number">
+                            🧾 Order #{{ order.id }}
+                        </div>
+
+                        <div class="order-date">
+                            {{ order.order_date }}
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="status {{ order.status|lower }}">
+
+                            {% if order.status == "Pending" %}
+                                🕐 Pending
+
+                            {% elif order.status == "Preparing" %}
+                                👨‍🍳 Preparing
+
+                            {% elif order.status == "Ready" %}
+                                🔔 Ready
+
+                            {% elif order.status == "Completed" %}
+                                🎉 Completed
+
+                            {% elif order.status == "Cancelled" %}
+                                ❌ Cancelled
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {% if order.status == "Cancelled" %}
+
+                    <div class="cancelled-box">
+
+                        <h3>❌ Order Cancelled</h3>
+
+                        <p>
+                            This order has been cancelled
+                            by the canteen.
+                        </p>
+
+                    </div>
+
+                {% else %}
+
+                    <h3>📦 Order Progress</h3>
+
+                    <div class="progress">
+
+                        <div class="step
+                            {% if order.status == 'Pending' or order.status == 'Preparing' or order.status == 'Ready' or order.status == 'Completed' %}
+                                active
+                            {% endif %}
+                        ">
+
+                            <div class="circle">✓</div>
+
+                            <span>🕐 Pending</span>
+
+                        </div>
+
+
+                        <div class="step
+                            {% if order.status == 'Preparing' or order.status == 'Ready' or order.status == 'Completed' %}
+                                active
+                            {% endif %}
+                        ">
+
+                            <div class="circle">✓</div>
+
+                            <span>👨‍🍳 Preparing</span>
+
+                        </div>
+
+
+                        <div class="step
+                            {% if order.status == 'Ready' or order.status == 'Completed' %}
+                                active
+                            {% endif %}
+                        ">
+
+                            <div class="circle">✓</div>
+
+                            <span>🔔 Ready</span>
+
+                        </div>
+
+
+                        <div class="step
+                            {% if order.status == 'Completed' %}
+                                active
+                            {% endif %}
+                        ">
+
+                            <div class="circle">✓</div>
+
+                            <span>🎉 Completed</span>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="student-info">
+
+                    <p>
+                        <strong>Student:</strong>
+                        {{ order.student_name }}
+                    </p>
+
+                    <p>
+                        <strong>Register Number:</strong>
+                        {{ order.register_number }}
+                    </p>
+
+                    <p>
+                        <strong>Phone Number:</strong>
+                        {{ order.phone_number }}
+                    </p>
+
+                </div>
+
+
+                <h3 class="items-title">
+                    🍴 Ordered Items
+                </h3>
+
+
+                <div class="food-found">
+
+                    {% for item in order.items.all %}
+
+                        <div class="item">
+
+                            <div>
+
+                                <div class="item-name">
+                                    🍴 {{ item.food.name }}
+                                </div>
+
+                                <div class="item-details">
+                                    ₹{{ item.price }} × {{ item.quantity }}
+                                </div>
+
+                            </div>
+
+
+                            <div class="item-total">
+
+                                ₹{{ item.total_item_price|floatformat:2 }}
+
+                            </div>
+
+                        </div>
+
+                    {% empty %}
+
+                        <div class="no-orders">
+
+                            <strong>⚠️ No food items found.</strong>
+
+                            <p>
+                                This order does not have any
+                                food items linked to it.
+                            </p>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="total">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <span>
+                        ₹{{ order.total_price }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+
+    {% elif searched %}
+
+        <div class="no-orders">
+
+            <h3>😔 No Orders Found</h3>
+
+            <p>
+                We couldn't find any orders
+                with the details you entered.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
